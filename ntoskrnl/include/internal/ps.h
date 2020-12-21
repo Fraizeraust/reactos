@@ -319,10 +319,36 @@ PspDeleteLdt(
     IN PEPROCESS Process
 );
 
+NTSTATUS
+NTAPI
+PspSetLdtSize(
+    IN PEPROCESS Process,
+    IN PROCESS_LDT_SIZE LdtSize,
+    IN ULONG InformationLength);
+
+NTSTATUS
+NTAPI
+PspSetLdtInformation(
+    IN PEPROCESS Process,
+    IN PROCESS_LDT_INFORMATION LdtInformation,
+    IN ULONG InformationLength);
+
 VOID
 NTAPI
 PspDeleteVdmObjects(
     IN PEPROCESS Process
+);
+
+VOID
+NTAPI
+PspVdmInitialize(
+    VOID
+);
+
+VOID
+NTAPI
+PspLdtInitialize(
+    VOID
 );
 
 NTSTATUS
@@ -462,6 +488,7 @@ extern LIST_ENTRY PsLoadedModuleList;
 extern KSPIN_LOCK PsLoadedModuleSpinLock;
 extern ERESOURCE PsLoadedModuleResource;
 extern ULONG_PTR PsNtosImageBase;
+extern PRKMUTEX LdtMutex;
 
 //
 // Inlined Functions

@@ -193,3 +193,9 @@
 
 /* FSTUB */
 #define TAG_FSTUB 'BtsF'
+
+/* Kernel tag */
+#define TAG_KERNEL '  eK'
+
+/* Local Descriptor Table tag (LDT) */
+#define TAG_LDT 'dLsP'

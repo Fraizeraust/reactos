@@ -4,6 +4,7 @@
  * FILE:            ntoskrnl/ps/i386/psldt.c
  * PURPOSE:         LDT support for x86
  * PROGRAMMERS:     Stefan Ginsberg (stefan.ginsberg@reactos.org)
+ *                  Copyright 2020 George Bișoc (george.bisoc@reactos.org)
  */
 
 /* INCLUDES ******************************************************************/
@@ -11,6 +12,10 @@
 #include <ntoskrnl.h>
 #define NDEBUG
 #include <debug.h>
+
+/* GLOBALS *******************************************************************/
+
+PRKMUTEX LdtMutex;
 
 /* FUNCTIONS *****************************************************************/
 
@@ -22,20 +27,20 @@ PspDeleteLdt(PEPROCESS Process)
     ASSERT(Process->LdtInformation == NULL);
 }
 
+/**
+ * @brief
+ * Initialises the Local Descriptor Table (LDT) mutex object in early boot phase.
+ * 
+ * @return
+ * Nothing.
+ * 
+ */
 VOID
 NTAPI
-PspDeleteVdmObjects(PEPROCESS Process)
+PspLdtInitialize(VOID)
 {
-    /* If there are no VDM objects, just exit */
-    if (Process->VdmObjects == NULL)
-        return;
-
-    /* FIXME: Need to do more than just freeing the main VdmObjects member! */
-    UNIMPLEMENTED;
-
-    /* Free VDM objects */
-    ExFreePoolWithTag(Process->VdmObjects, '  eK');
-    Process->VdmObjects = NULL;
+    /* Call the kernel to initialise our mutex */
+    KeInitializeMutex(LdtMutex);
 }
 
 NTSTATUS
